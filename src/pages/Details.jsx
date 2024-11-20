@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import useFetchDetail from "../hooks/useFetchDetail";
@@ -6,8 +6,12 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import Divider from "../components/Divider";
 import HorizontalScrollCard from "../components/HorizontalScrollCard";
+import VideoPlay from "../components/VideoPlay";
 
 const Details = () => {
+  const [playVideo, setPlayVideo] = useState(false);
+  const [playVideoId, setPlayVideoId] = useState("");
+
   const params = useParams();
   const imageUrl = useSelector((state) => state?.movieoData?.imageUrl);
 
@@ -21,8 +25,11 @@ const Details = () => {
   const { data: recommendationData } = useFetch(
     `/${params?.explore}/${params?.id}/recommendation`
   );
-  console.log(data);
-  console.log("params", params);
+
+  const handlePlayVideo = (data) => {
+    setPlayVideoId(data);
+    setPlayVideo(true);
+  };
 
   const duration = (Number(data?.runtime) / 60).toFixed(1).split(".");
 
@@ -45,6 +52,12 @@ const Details = () => {
             alt="img"
             className="h-80 w-90 object-cover rounded"
           />
+          <button
+            className="mt-3 w-full py-3 px-4 text-center bg-white text-black rounded font-bold text-lg hover:bg-gradient-to-l from-red-500 to-orange-500"
+            onClick={() => handlePlayVideo(data)}
+          >
+            Play Now
+          </button>
         </div>
         <div>
           <h2 className="text-4xl font-bold text-white">
@@ -115,6 +128,13 @@ const Details = () => {
           heading={"Recommendation " + params?.explore}
         />
       </div>
+      {playVideo && (
+        <VideoPlay
+          data={playVideoId}
+          close={() => setPlayVideo(false)}
+          media_type={params?.explore}
+        />
+      )}
     </div>
   );
 };
