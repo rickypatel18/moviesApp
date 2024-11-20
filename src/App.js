@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     fetchtrendingData();
     fetchConfiguration();
-  }, []); // Empty dependency array to call the function only once
+  }, []); 
 
   return (
     <main className="pb-14 lg:pb-0">
