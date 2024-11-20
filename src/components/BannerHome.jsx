@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const BannerHome = () => {
   const bannerData = useSelector((state) => state.movieoData.bannerData);
-  //   console.log(bannerData);
+  
   const imageUrl = useSelector((state) => state.movieoData.imageUrl);
 
   const [currenImage, setCurrentImage] = useState(0);
